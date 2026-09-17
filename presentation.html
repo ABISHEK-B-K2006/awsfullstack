@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsureFlow - Project Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --accent: #2563eb;
+      --emerald: #059669;
+      --amber: #d97706;
+      --rose: #e11d48;
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Presentation Container */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 600px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 48px 56px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(2, 132, 199, 0.1);
+      animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Header & Tag */
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .slide-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    /* Grid & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 22px;
+      transition: all 0.2s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(30, 41, 59, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+
+    /* Bullet List */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .bullet-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      margin-top: 6px;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px #38bdf8;
+    }
+
+    /* Code Pill */
+    .code-pill {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.84rem;
+    }
+
+    /* Footer & Controls */
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 36px;
+      background: rgba(15, 23, 42, 0.85);
+      border-top: 1px solid var(--card-border);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      border: none;
+    }
+
+    .speaker-notes-toggle {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.82rem;
+      text-decoration: underline;
+    }
+
+    .speaker-notes-toggle:hover {
+      color: #94a3b8;
+    }
+
+    .speaker-notes-box {
+      display: none;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 0.84rem;
+      color: #fbbf24;
+      line-height: 1.45;
+    }
+
+    .speaker-notes-box.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Presentation Viewport -->
+  <div class="deck-container">
+
+    <!-- SLIDE 1: TITLE -->
+    <div class="slide active" id="slide-1">
+      <div>
+        <div class="slide-badge">🚀 Final Project Presentation</div>
+        <h1 style="font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 14px; background: linear-gradient(135deg, #38bdf8 0%, #ffffff 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          InsureFlow
+        </h1>
+        <div style="font-size: 1.35rem; color: #94a3b8; font-weight: 600; margin-bottom: 28px;">
+          Next-Gen Enterprise Insurance Lifecycle &amp; Concurrency-Safe Settlement Platform
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 20px;">
+        <div class="feature-card">
+          <div class="card-icon">🔒</div>
+          <div class="card-title">Zero-Overdraw Guarantee</div>
+          <div class="card-text">Database row serialization with pessimistic locks prevents over-disbursements.</div>
+        </div>
+        <div class="feature-card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Multi-Role Architecture</div>
+          <div class="card-text">Dedicated digital workspaces for Policyholders, Underwriters, Adjusters &amp; Managers.</div>
+        </div>
+        <div class="feature-card">
+          <div class="card-icon">🌐</div>
+          <div class="card-title">Live Public Tracking</div>
+          <div class="card-text">Real-time status lookup and dynamic capacity inspection in Indian Rupees (₹).</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; font-size: 0.9rem; color: #64748b;">
+        <div><strong>Tech Stack:</strong> Spring Boot 3 • React 18 • JPA Concurrency • JWT RBAC</div>
+        <div><strong>Press Space or → to advance</strong></div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-1">
+        <strong>🗣️ Speaker Note (30s):</strong> "Good morning/afternoon respected judges. Today, we are presenting InsureFlow—a full-stack enterprise insurance management system engineered to solve the multi-billion dollar problem of concurrent claim race conditions, opaque processing, and fragmented stakeholder workflows."
+      </div>
+    </div>
+
+    <!-- SLIDE 2: PROBLEM STATEMENT -->
+    <div class="slide" id="slide-2">
+      <div>
+        <div class="slide-badge">⚠️ Problem Statement</div>
+        <h2 class="slide-title">Critical Gaps in Legacy Insurance Systems</h2>
+        <p class="slide-subtitle">Traditional insurer architectures suffer from financial exposure, slow turnaround, and lack of transparency.</p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 20px;">
+        <div class="feature-card" style="border-left: 4px solid var(--rose);">
+          <div class="card-title" style="color: #fda4af;">1. Concurrent Payout Race Conditions</div>
+          <div class="card-text">When multiple claims are approved simultaneously against a single policy, legacy databases experience phantom reads and over-disbursements exceeding policy caps.</div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid var(--amber);">
+          <div class="card-title" style="color: #fde68a;">2. Fragmented Stakeholder Silos</div>
+          <div class="card-text">Policyholders, underwriters, field adjusters, and claims directors operate on disconnected tools, causing 30+ day claim settlement delays.</div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid #38bdf8;">
+          <div class="card-title" style="color: #bae6fd;">3. Static Risk Assessment</div>
+          <div class="card-text">Manual actuarial rate calculation without real-time risk factor calibration (age, occupational hazards, prior claims history).</div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid var(--emerald);">
+          <div class="card-title" style="color: #a7f3d0;">4. Lack of Public Transparency</div>
+          <div class="card-text">Policyholders lack real-time visibility into remaining capacity buffers and live investigation stages.</div>
+        </div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-2">
+        <strong>🗣️ Speaker Note (45s):</strong> "In real-world insurance firms, the biggest threat is financial overdraw—two claims approved at the same second exceeding a ₹2,50,000 policy buffer. Furthermore, policyholders wait weeks without knowing claim status, and risk scoring is done manually on spreadsheets."
+      </div>
+    </div>
+
+    <!-- SLIDE 3: SOLUTION & ARCHITECTURE -->
+    <div class="slide" id="slide-3">
+      <div>
+        <div class="slide-badge">🏗️ System Architecture</div>
+        <h2 class="slide-title">InsureFlow Full-Stack Engineering</h2>
+        <p class="slide-subtitle">Modular, decoupled 3-tier architecture built with modern enterprise standards.</p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 20px;">
+        <div class="feature-card">
+          <div class="card-icon">⚛️</div>
+          <div class="card-title">Frontend Tier</div>
+          <ul class="bullet-list" style="font-size: 0.84rem;">
+            <li class="bullet-item"><span class="bullet-dot"></span>React 18 &amp; Vite SPA</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>Tailored Glassmorphism &amp; CSS Variables</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>Live Dynamic Capacity Bars (₹)</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>1-Click Role Persona Switcher</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">☕</div>
+          <div class="card-title">Backend API Tier</div>
+          <ul class="bullet-list" style="font-size: 0.84rem;">
+            <li class="bullet-item"><span class="bullet-dot"></span>Spring Boot 3 &amp; Java 17</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>Spring Security 6 with Stateless JWT</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>Role-Based Access Control (RBAC)</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>REST Latency &lt; 28ms Turnaround</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">🗄️</div>
+          <div class="card-title">Data &amp; Concurrency</div>
+          <ul class="bullet-list" style="font-size: 0.84rem;">
+            <li class="bullet-item"><span class="bullet-dot"></span>Spring Data JPA &amp; Hibernate</li>
+            <li class="bullet-item"><span class="bullet-dot"></span><code class="code-pill">@Lock(PESSIMISTIC_WRITE)</code></li>
+            <li class="bullet-item"><span class="bullet-dot"></span>HikariCP Connection Pool</li>
+            <li class="bullet-item"><span class="bullet-dot"></span>ACID Transactional Rollbacks</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-3">
+        <strong>🗣️ Speaker Note (45s):</strong> "Our solution is built on Spring Boot 3 and React 18. We implemented stateless JWT authentication with strict role-based access for four distinct stakeholders. All data transactions are backed by JPA with connection pooling and sub-30ms REST response times."
+      </div>
+    </div>
+
+    <!-- SLIDE 4: CORE INNOVATION -->
+    <div class="slide" id="slide-4">
+      <div>
+        <div class="slide-badge">⚡ Core Innovation</div>
+        <h2 class="slide-title">Transactional Concurrency &amp; Zero-Overdraw</h2>
+        <p class="slide-subtitle">How InsureFlow mathematically prevents financial leakage during peak adjudications.</p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 20px;">
+        <div class="feature-card">
+          <div class="card-title" style="color: #38bdf8;">Pessimistic Write Lock Engine</div>
+          <p class="card-text" style="margin-bottom: 12px;">During claim settlement, the backend invokes a row-level database lock:</p>
+          <div style="background: #090d16; padding: 12px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #7dd3fc; line-height: 1.4; border: 1px solid rgba(56,189,248,0.2);">
+            @Lock(LockModeType.PESSIMISTIC_WRITE)<br/>
+            @Query("SELECT p FROM InsurancePolicy p WHERE p.id = :id")<br/>
+            Optional&lt;InsurancePolicy&gt; findByIdWithPessimisticWrite(@Param("id") Long id);
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-title" style="color: #34d399;">Atomic Buffer Deduction Lifecycle</div>
+          <ul class="bullet-list" style="font-size: 0.86rem;">
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>Step 1:</strong> Acquire row lock on target policy.</li>
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>Step 2:</strong> Verify requested payout &le; live remaining buffer.</li>
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>Step 3:</strong> Atomically deduct remaining capacity and commit.</li>
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>Step 4:</strong> Automatically schedule electronic wire disbursement.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-4">
+        <strong>🗣️ Speaker Note (45s):</strong> "This is our core technical innovation. Rather than relying on optimistic version checks that cause rejected retries, we use Pessimistic Write Locks directly on the policy table. When Manager approves a payout, the remaining buffer is locked, verified, and deducted atomically. Zero overdraw is mathematically guaranteed."
+      </div>
+    </div>
+
+    <!-- SLIDE 5: MULTI-STAKEHOLDER WORKFLOW -->
+    <div class="slide" id="slide-5">
+      <div>
+        <div class="slide-badge">👥 User Workflows</div>
+        <h2 class="slide-title">4 Specialized Role Ecosystems</h2>
+        <p class="slide-subtitle">Tailored interfaces and strict security boundaries for every participant in the insurance lifecycle.</p>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 20px;">
+        <div class="feature-card">
+          <div class="card-icon">🛡️</div>
+          <div class="card-title" style="font-size: 1rem;">Policyholder</div>
+          <div class="card-text" style="font-size: 0.82rem;">
+            • Files loss claims<br/>
+            • Monitors live buffers<br/>
+            • Downloads wire receipts<br/>
+            • 1-Click claim tracker
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">📋</div>
+          <div class="card-title" style="font-size: 1rem;">Underwriter</div>
+          <div class="card-text" style="font-size: 0.82rem;">
+            • Provisions policies<br/>
+            • Calibrates risk factors<br/>
+            • Calculates multipliers<br/>
+            • Activates coverage
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title" style="font-size: 1rem;">Claims Adjuster</div>
+          <div class="card-text" style="font-size: 0.82rem;">
+            • Inspects loss evidence<br/>
+            • Verifies repair invoices<br/>
+            • Attaches audit notes<br/>
+            • Submits recommendations
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title" style="font-size: 1rem;">Manager</div>
+          <div class="card-text" style="font-size: 0.82rem;">
+            • Concurrency adjudication<br/>
+            • Locks &amp; deducts limits<br/>
+            • Executes ACH wire payout<br/>
+            • Generates wire slips
+          </div>
+        </div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-5">
+        <strong>🗣️ Speaker Note (45s):</strong> "InsureFlow connects four distinct roles in one continuous loop: Underwriter provisions and risk-scores the policy; Policyholder files a loss claim; Adjuster investigates evidence and recommends approval; and Manager executes the concurrency-safe adjudication and releases the wire transfer."
+      </div>
+    </div>
+
+    <!-- SLIDE 6: KEY FEATURES -->
+    <div class="slide" id="slide-6">
+      <div>
+        <div class="slide-badge">✨ Key Features</div>
+        <h2 class="slide-title">Interactive Capabilities &amp; Live Tracking</h2>
+        <p class="slide-subtitle">Delivering transparency, speed, and real-time operational analytics.</p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 20px;">
+        <div class="feature-card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Real-Time Public Tracker</div>
+          <div class="card-text">Permit-all public endpoint (<code class="code-pill">/api/v1/public/track</code>) allows policyholders &amp; third parties to track policy limits and claim settlements instantly.</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Actuarial Risk Gauge</div>
+          <div class="card-text">Interactive factor calibration computes real-time quantitative risk scores (0–100), risk tiers (LOW/MED/HIGH), and base rate multipliers.</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">🧾</div>
+          <div class="card-title">Wire Slips &amp; Receipts</div>
+          <div class="card-text">Automated generation of printable electronic settlement slips with transaction hashes, routing numbers, and cryptographic verification seals.</div>
+        </div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-6">
+        <strong>🗣️ Speaker Note (45s):</strong> "In our live application, you can see real-time public tracking where visitors can type in policy numbers like POL-100200 or claim IDs like CLM-8492 to view verified status. We also provide interactive actuarial risk scoring and printable ACH wire slips with confetti celebrations."
+      </div>
+    </div>
+
+    <!-- SLIDE 7: BUSINESS IMPACT & ROADMAP -->
+    <div class="slide" id="slide-7">
+      <div>
+        <div class="slide-badge">📈 Impact &amp; Roadmap</div>
+        <h2 class="slide-title">Business Value &amp; Future Scope</h2>
+        <p class="slide-subtitle">Demonstrated benefits and long-term commercial scalability.</p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 20px;">
+        <div class="feature-card">
+          <div class="card-title" style="color: #34d399;">Measurable Business Value</div>
+          <ul class="bullet-list" style="font-size: 0.88rem;">
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>70% Faster Settlements:</strong> Replaces paper backlogs with streamlined digital handoffs.</li>
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>100% Zero-Overdraw:</strong> Eliminates catastrophic concurrent capacity leaks.</li>
+            <li class="bullet-item"><span class="bullet-dot" style="background: #34d399;"></span><strong>Live Actuarial Loss Ratios:</strong> Continuous exposure tracking protects insurer solvency.</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-title" style="color: #38bdf8;">Future Scalability Roadmap</div>
+          <ul class="bullet-list" style="font-size: 0.88rem;">
+            <li class="bullet-item"><span class="bullet-dot"></span><strong>AI Vision OCR:</strong> Automated parsing of vehicle damage photos and hospital invoices.</li>
+            <li class="bullet-item"><span class="bullet-dot"></span><strong>Blockchain Ledger:</strong> Decentralized smart contract claim execution.</li>
+            <li class="bullet-item"><span class="bullet-dot"></span><strong>IoT Telematics:</strong> Dynamic usage-based fleet insurance pricing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="speaker-notes-box" id="notes-7">
+        <strong>🗣️ Speaker Note (45s):</strong> "To conclude, InsureFlow delivers 70% faster claim settlements with a 100% guarantee against concurrent financial overdraws. Our future roadmap includes AI-based invoice OCR and IoT telematics. We are now ready to demonstrate the live system. Thank you!"
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation Bar -->
+  <div class="footer-bar">
+    <div>
+      <span style="font-weight: 800; color: #ffffff;">Insure<span style="color: #38bdf8;">Flow</span></span>
+      <span style="margin-left: 8px; color: #64748b;">Slide <span id="current-slide-num">1</span> of <span id="total-slides-num">7</span></span>
+    </div>
+
+    <div>
+      <button class="speaker-notes-toggle" onclick="toggleNotes()">Toggle Speaker Notes (S)</button>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn" id="prev-btn" onclick="prevSlide()">← Prev</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextSlide()">Next →</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 7;
+    let showNotes = false;
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide').forEach((s, idx) => {
+        s.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.getElementById('current-slide-num').innerText = currentSlide;
+      document.getElementById('prev-btn').disabled = (currentSlide === 1);
+      document.getElementById('next-btn').innerText = (currentSlide === totalSlides) ? 'Finish 🏁' : 'Next →';
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function toggleNotes() {
+      showNotes = !showNotes;
+      document.querySelectorAll('.speaker-notes-box').forEach(el => {
+        el.classList.toggle('show', showNotes);
+      });
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 's' || e.key === 'S') {
+        toggleNotes();
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+    });
+
+    showSlide(1);
+  </script>
+</body>
+</html>
